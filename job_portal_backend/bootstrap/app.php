@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -14,8 +15,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         // $middleware->prependToGroup('api', \App\Http\Middleware\AttachJwtFromCookie::class);
-        $middleware->validateCsrfTokens(except:[
+        $middleware->validateCsrfTokens(except: [
             'api/*', // Disable CSRF for API if using JWT/Cookies
+        ]);
+
+        $middleware->alias([
+            'role' => RoleMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

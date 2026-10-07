@@ -18,6 +18,7 @@ class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -27,6 +28,7 @@ class User extends Authenticatable implements JWTSubject
         'google_id',
         'is_active',
     ];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -42,7 +44,7 @@ class User extends Authenticatable implements JWTSubject
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
     ];
 
     // Relationship
@@ -66,6 +68,11 @@ class User extends Authenticatable implements JWTSubject
     #[Override]
     public function getJWTCustomClaims()
     {
-        return [];
+        return ['role' => $this->role];
+    }
+
+    public function getFullNameAttributes()
+    {
+        return "{$this->first_name} {$this->last_name}";
     }
 }

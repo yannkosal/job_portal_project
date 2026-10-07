@@ -45,8 +45,11 @@ function RecruiterLogin() {
   };
 
   const handleManualLogin = async (e) => {
+    e.preventDefault();
+
     try {
       setLoading(true);
+      
       await axios.post(
         `${API_URL}/auth/login`,
         {
